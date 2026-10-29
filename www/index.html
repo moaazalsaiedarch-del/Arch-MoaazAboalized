@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arch-Moaaz Aboualized | حصر التشطيبات</title>
+<script src="lib/exceljs.min.js"></script>
+<script src="lib/html2canvas.min.js"></script>
+<script src="lib/jspdf.umd.min.js"></script>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--tx:#1d2330;--mu:#6b7280;--bd:#e3ded3;--ac:#b4642a;--ac2:#8f4c1b;--ok:#2e7d4f;--dn:#c0392b;--hd:#1f2a3d;--hdt:#fff;--in:#fbfaf7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181f;--card:#1e222b;--tx:#e8e6e1;--mu:#9aa0ab;--bd:#323846;--ac:#e08a4c;--ac2:#f0a06a;--ok:#5cc08a;--dn:#ef7b6f;--hd:#0f1218;--in:#171a21}}
+:root[data-theme="dark"]{--bg:#15181f;--card:#1e222b;--tx:#e8e6e1;--mu:#9aa0ab;--bd:#323846;--ac:#e08a4c;--ac2:#f0a06a;--ok:#5cc08a;--dn:#ef7b6f;--hd:#0f1218;--in:#171a21}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Cairo',Tahoma,'Segoe UI',sans-serif;font-size:15px}
+header{background:var(--hd);color:var(--hdt);padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+h1{margin:0;font-size:19px;letter-spacing:.3px}
+h1 small{display:block;font-size:12px;font-weight:400;opacity:.75;direction:ltr;text-align:right}
+main{max-width:1150px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+label{display:block;font-size:12px;color:var(--mu);margin-bottom:3px}
+input,select{width:100%;padding:8px 9px;border:1px solid var(--bd);border-radius:8px;background:var(--in);color:var(--tx);font:inherit}
+input:focus,select:focus{outline:2px solid var(--ac);outline-offset:0}
+.wide{grid-column:span 2}
+button{font:inherit;border:0;border-radius:8px;padding:9px 14px;cursor:pointer;background:var(--ac);color:#fff;font-weight:600}
+button:hover{background:var(--ac2)}
+button.sec{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+button.sec:hover{background:var(--bg)}
+button.ok{background:var(--ok)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.prev{margin-inline-start:auto;font-weight:700;color:var(--ac)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:var(--bg);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:20px;color:var(--ac)}
+.stat span{font-size:12px;color:var(--mu)}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:1020px}
+th,td{padding:8px 7px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+th{background:var(--bg);font-size:12px;color:var(--mu);position:sticky;top:0}
+td.n{font-variant-numeric:tabular-nums}
+tr.ded td{color:var(--dn)}
+td button{padding:4px 9px;font-size:12px;margin-inline-end:4px}
+.del{background:var(--dn)}
+.empty{text-align:center;color:var(--mu);padding:26px}
+.tag{display:inline-block;background:var(--bg);border-radius:6px;padding:1px 7px;font-size:12px}
+.chk{display:flex;align-items:center;gap:6px;padding-top:20px}
+.chk input{width:auto}
+#msg{font-size:13px;color:var(--ok)}
+.ddr{display:grid;grid-template-columns:1.2fr repeat(4,1fr) auto auto;gap:6px;align-items:center;margin-bottom:6px}
+.ddv{font-size:12px;color:var(--dn);white-space:nowrap}
+.ddr .del{padding:6px 10px}
+@media (max-width:640px){.ddr{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>حصر بنود التشطيبات<small>Arch-Moaaz Aboualized</small></h1>
+  <div style="min-width:220px;flex:1;max-width:340px"><input id="pname" placeholder="اسم المشروع" aria-label="اسم المشروع"></div><img id="logoPrev" hidden alt="الشعار" style="height:36px;border-radius:4px;background:#fff"><button id="logoBtn" class="sec" style="color:#fff;border-color:#ffffff66">رفع شعاري</button><button id="logoDel" class="sec" hidden style="color:#fff;border-color:#ffffff66">حذف الشعار</button><input type="file" id="logoFile" accept="image/*" hidden>
+</header>
+<main>
+<section class="card">
+  <h2 id="ftitle">إضافة بند حصر</h2>
+  <div class="grid">
+    <div><label>الدور</label><input id="floor" list="floors" placeholder="مثال: الدور الأول"></div>
+    <div><label>القسم / الغرفة</label><input id="section" list="sections" placeholder="مثال: غرفة النوم"></div>
+    <div class="wide"><label>البند</label><input id="item" list="items" placeholder="مثال: سيراميك أرضيات"></div>
+    <div><label>الوحدة</label>
+      <select id="unit"><option>م²</option><option>م.ط</option><option>م³</option><option>عدد</option></select></div>
+    <div><label>الطول (م)</label><input id="l" type="number" step="any" min="0" inputmode="decimal"></div>
+    <div><label>العرض (م)</label><input id="w" type="number" step="any" min="0" inputmode="decimal"></div>
+    <div><label>الارتفاع (م)</label><input id="h" type="number" step="any" min="0" inputmode="decimal"></div>
+    <div><label>المساحة (م²)</label><input id="a" type="number" step="any" min="0" inputmode="decimal" placeholder="تلقائية أو اكتبها"></div>
+    <div><label>العدد</label><input id="n" type="number" step="any" min="0" value="1" inputmode="decimal"></div>
+    <div><label>سعر الوحدة</label><input id="price" type="number" step="any" min="0" inputmode="decimal"></div>
+    <label class="chk"><input id="ded" type="checkbox"> اعتبار البند كله خصمًا</label>
+  </div>
+  <div id="ddbox" style="margin-top:12px">
+    <label>خصومات من هذا البند (شبابيك / أبواب / فتحات) تُخصم تلقائيًا من المساحة</label>
+    <div id="ddrows"></div>
+    <div class="bar" style="margin-top:6px"><button type="button" class="sec" data-add="شباك">+ شباك</button><button type="button" class="sec" data-add="باب">+ باب</button><button type="button" class="sec" data-add="فتحة">+ فتحة أخرى</button><span id="ddsum" style="color:var(--dn);font-weight:700"></span></div>
+  </div>
+  <div class="bar">
+    <button id="save">إضافة البند</button>
+    <button id="cancel" class="sec" hidden>إلغاء التعديل</button>
+    <span class="prev" id="prev">الكمية: 0</span>
+  </div>
+  <datalist id="floors"></datalist><datalist id="sections"></datalist><datalist id="items"></datalist>
+</section>
+
+<section class="card">
+  <div class="stats" id="stats"></div>
+</section>
+
+<section class="card">
+  <div class="bar" style="margin:0 0 10px">
+    <h2 style="margin:0">بنود الحصر</h2>
+    <select id="ffilter" style="width:auto;min-width:150px" aria-label="تصفية حسب الدور"></select>
+    <span style="margin-inline-start:auto"></span>
+    <button id="xl" class="ok">تصدير Excel</button>
+    <button id="pdf" class="ok">تصدير PDF</button>
+    <button id="jpg" class="ok">تصدير JPG</button>
+    <button id="clear" class="sec">مسح الكل</button>
+  </div>
+  <div id="msg" role="status"></div>
+  <div class="scroll"><table>
+    <thead><tr><th>م</th><th>الدور</th><th>القسم</th><th>البند</th><th>الوحدة</th><th>الطول</th><th>العرض</th><th>الارتفاع</th><th>المساحة</th><th>العدد</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+</section>
+<p style="text-align:center;color:var(--mu);font-size:12px">تُحفظ البيانات تلقائيًا في متصفحك على هذا الجهاز فقط.</p>
+</main>
+<script>
+const KEY='arch-moaaz-takeoff-v1';
+const $=id=>document.getElementById(id);
+const FLOORS=['بدروم','الدور الأرضي','الدور الأول','الدور الثاني','الدور الثالث','الدور الرابع','السطح'];
+const SECTIONS=['غرفة نوم','صالة','ريسبشن','مطبخ','حمام','سلم','بلكونة','مدخل','طرقة'];
+const PRESETS={'سيراميك أرضيات':'م²','بورسلين أرضيات':'م²','رخام أرضيات':'م²','سيراميك حوائط':'م²','بياض محارة':'م²','دهان بلاستيك':'م²','دهان زيتي':'م²','معجون':'م²','أسقف جبس بورد':'م²','بانوهات':'م²','وزر سيراميك':'م.ط','وزر خشب':'م.ط','كرانيش':'م.ط','حلوق أبواب':'عدد','أبواب':'عدد','شبابيك':'عدد','نقاط كهرباء':'عدد','عزل مائي':'م²'};
+Object.assign(PRESETS,{'سيراميك أرضيات حمامات':'م²','سيراميك أرضيات مطبخ':'م²','جرانيت أرضيات':'م²','باركيه خشب':'م²','أرضيات فينيل':'م²','موزايكو':'م²','إنترلوك':'م²','أرضيات إيبوكسي':'م²','مونة تسوية أرضيات':'م²','فرش رمل وخرسانة أرضيات':'م²','رخام حوائط':'م²','جرانيت حوائط':'م²','سيراميك حوائط حمامات':'م²','سيراميك حوائط مطبخ':'م²','حجر هاشمي':'م²','حجر ديكوري':'م²','كلادينج واجهات':'م²','ورق حائط':'م²','بانوهات خشب':'م²','بانوهات WPC':'م²','بياض محارة خارجي':'م²','بياض محارة أسقف':'م²','طرطشة':'م²','استوكو':'م²','بغدادلي':'م²','معجون حوائط':'م²','معجون أسقف':'م²','وجه تأسيس (سيلر)':'م²','دهان بلاستيك داخلي':'م²','دهان بلاستيك أسقف':'م²','دهان خارجي':'م²','دهان إيبوكسي':'م²','دهان أبواب وشبابيك':'م²','دهان حديد':'م²','أسقف جبس بورد معلقة':'م²','أسقف جبس بورد مقاوم للرطوبة':'م²','أسقف ألواح معدنية':'م²','أسقف خشب':'م²','كرانيش جبس':'م.ط','ستارة إضاءة (ليد جبس)':'م.ط','وزر بورسلين':'م.ط','وزر رخام':'م.ط','وزر جرانيت':'م.ط','عتبات رخام':'م.ط','عتبات شبابيك رخام':'م.ط','نعل سلم رخام':'م.ط','درجات سلم رخام':'م²','تجليد سلم (قائمة)':'م²','تجليد سلم (نائمة)':'م²','حليات ألومنيوم فواصل':'م.ط','فواصل تمدد':'م.ط','أبواب خشب داخلية':'عدد','أبواب ألوميتال':'عدد','أبواب حديد':'عدد','باب مدخل رئيسي':'عدد','باب شقة مصفح':'عدد','حلق باب خشب':'عدد','كسوة حلوق':'م.ط','شبابيك ألوميتال':'م²','شبابيك خشب':'م²','شبابيك PVC':'م²','زجاج سيكوريت':'م²','واجهات زجاج':'م²','شيش حصيرة':'م²','ستائر رول':'م²','درابزين سلم':'م.ط','درابزين بلكونة':'م.ط','درابزين ستانلس':'م.ط','سور حديد':'م.ط','بوابات حديد':'عدد','عزل حراري أسطح':'م²','عزل حراري حوائط':'م²','عزل حمامات':'م²','عزل خزانات':'م²','عزل بلكونات':'م²','عزل أساسات (بيوتومين)':'م²','طبقة ميول أسطح':'م²','بلاط أسطح':'م²','أطقم حمام':'عدد','أحواض غسيل':'عدد','مراحيض':'عدد','بانيو':'عدد','خلاطات':'عدد','دش':'عدد','مرايا حمام':'عدد','رخامة مطبخ':'م.ط','مطبخ خشب (وحدات سفلية)':'م.ط','مطبخ خشب (وحدات علوية)':'م.ط','دواليب حوائط':'م²','غرفة ملابس':'م²','نقاط إنارة':'عدد','أفياش':'عدد','مفاتيح':'عدد','سبوت لايت':'عدد','نقاط سباكة':'عدد','نقاط تكييف':'عدد','واجهات حجر':'م²','بروزات وكرانيش واجهات':'م.ط'});
+let S={name:'',items:[]};
+let editId=null,aMan=false,dd=[];
+function load(){try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(d&&Array.isArray(d.items))S=d}}catch(e){}}
+function persist(){try{const {logo,logoR,...rest}=S;localStorage.setItem(KEY,JSON.stringify(rest))}catch(e){}}
+const num=v=>{const x=parseFloat(v);return isFinite(x)&&x>0?x:0};
+function calc(it){
+  const l=num(it.l),w=num(it.w),h=num(it.h),n=it.n===''||it.n==null?1:(parseFloat(it.n)||0);
+  let b=0;
+  const A=it.am?num(it.a):0;
+  if(it.unit==='م²')b=(A||l*(w||h))-dedOf(it);
+  else if(it.unit==='م.ط')b=l||w||h;
+  else if(it.unit==='م³')b=A?A*h:l*w*h;
+  else b=1;
+  const q=b*n;return it.ded?-q:q;
+}
+function ddArea(x){const c=x.c===''||x.c==null?1:(parseFloat(x.c)||0);return (num(x.a)||num(x.l)*num(x.w))*c}
+function dedOf(it){return (it.dd||[]).reduce((t,x)=>t+ddArea(x),0)}
+function renderDD(){
+  $('ddrows').innerHTML=dd.map((x,i)=>`<div class="ddr" data-i="${i}"><input data-f="n" placeholder="الاسم" value="${esc(x.n)}"><input data-f="l" type="number" step="any" min="0" placeholder="الطول" value="${esc(x.l)}"><input data-f="w" type="number" step="any" min="0" placeholder="العرض" value="${esc(x.w)}"><input data-f="a" type="number" step="any" min="0" placeholder="أو المساحة" value="${esc(x.a)}"><input data-f="c" type="number" step="any" min="0" placeholder="العدد" value="${esc(x.c)}"><span class="ddv">${f2(ddArea(x))} م²</span><button type="button" class="del" data-x="${i}" aria-label="حذف الخصم">×</button></div>`).join('');
+  updDD()}
+function updDD(){const t=dd.reduce((s,x)=>s+ddArea(x),0);$('ddsum').textContent=t?'إجمالي الخصم: '+f2(t)+' م²':''}
+function areaOf(it){const l=num(it.l),w=num(it.w),h=num(it.h),A=it.am?num(it.a):0;if(it.unit==='م²')return A||l*(w||h);if(it.unit==='م³')return A||l*w;return 0}
+const f2=x=>(Math.round(x*100)/100).toLocaleString('en-US',{maximumFractionDigits:2});
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function form(){return{floor:$('floor').value.trim(),section:$('section').value.trim(),name:$('item').value.trim(),unit:$('unit').value,l:$('l').value,w:$('w').value,h:$('h').value,n:$('n').value,price:$('price').value,ded:$('ded').checked,dd:dd.filter(x=>ddArea(x)>0).map(x=>({...x})),a:$('a').value,am:aMan&&$('a').value!==''}}
+function preview(){const u=$('unit').value,off=u==='م.ط'||u==='عدد';$('a').disabled=off;$('ddbox').hidden=u!=='م²';
+  if(!aMan){const ar=areaOf({...form(),am:false});$('a').value=ar&&!off?Math.round(ar*1000)/1000:''}
+  const q=calc(form());$('prev').textContent='الكمية: '+f2(q)+' '+u}
+function resetForm(keep){
+  editId=null;$('ftitle').textContent='إضافة بند حصر';$('save').textContent='إضافة البند';$('cancel').hidden=true;
+  ['item','l','w','h','a','price'].forEach(i=>$(i).value='');aMan=false;dd=[];renderDD();$('n').value='1';$('ded').checked=false;
+  if(!keep){$('floor').value='';$('section').value=''}
+  preview();
+}
+function lists(){
+  const fl=[...new Set([...FLOORS,...S.items.map(i=>i.floor)].filter(Boolean))];
+  const se=[...new Set([...SECTIONS,...S.items.map(i=>i.section)].filter(Boolean))];
+  const it=[...new Set([...Object.keys(PRESETS),...S.items.map(i=>i.name)].filter(Boolean))];
+  $('floors').innerHTML=fl.map(x=>`<option value="${esc(x)}">`).join('');
+  $('sections').innerHTML=se.map(x=>`<option value="${esc(x)}">`).join('');
+  $('items').innerHTML=it.map(x=>`<option value="${esc(x)}">`).join('');
+  const cur=$('ffilter').value||'';
+  const used=[...new Set(S.items.map(i=>i.floor||'—'))];
+  $('ffilter').innerHTML='<option value="">كل الأدوار</option>'+used.map(x=>`<option value="${esc(x)}"${x===cur?' selected':''}>${esc(x)}</option>`).join('');
+}
+function render(){
+  lists();
+  const fl=$('ffilter').value;
+  const list=S.items.map((it,i)=>({it,i})).filter(o=>!fl||(o.it.floor||'—')===fl);
+  const rows=$('rows');
+  if(!list.length){rows.innerHTML='<tr><td colspan="14" class="empty">لا توجد بنود بعد. أضف أول بند من النموذج بالأعلى.</td></tr>'}
+  else rows.innerHTML=list.map(({it,i})=>{const q=calc(it),p=parseFloat(it.price)||0;
+    return `<tr class="${it.ded?'ded':''}"><td>${i+1}</td><td>${esc(it.floor)}</td><td>${esc(it.section)}</td><td>${esc(it.name)}${it.ded?' <span class="tag">خصم</span>':''}${dedOf(it)?` <span class="tag">−${f2(dedOf(it))} م²</span>`:''}</td><td>${esc(it.unit)}</td><td class="n">${it.l?esc(it.l)+' م':''}</td><td class="n">${it.w?esc(it.w)+' م':''}</td><td class="n">${it.h?esc(it.h)+' م':''}</td><td class="n">${areaOf(it)?f2(areaOf(it))+' م²':''}</td><td class="n">${esc(it.n)}</td><td class="n"><b>${f2(q)} ${esc(it.unit)}</b></td><td class="n">${p?f2(p)+' جنيه':''}</td><td class="n"><b>${f2(q*p)} جنيه</b></td><td><button class="sec" data-e="${it.id}">تعديل</button><button class="del" data-d="${it.id}">حذف</button></td></tr>`}).join('');
+  const all=S.items,tot=all.reduce((s,it)=>s+calc(it)*(parseFloat(it.price)||0),0);
+  const fls=new Set(all.map(i=>i.floor||'—')).size;
+  $('stats').innerHTML=`<div class="stat"><b>${all.length}</b><span>عدد البنود</span></div><div class="stat"><b>${fls}</b><span>عدد الأدوار</span></div><div class="stat"><b>${new Set(all.map(i=>i.name)).size}</b><span>أنواع البنود</span></div><div class="stat"><b>${f2(tot)} جنيه</b><span>الإجمالي الكلي</span></div>`;
+  $('pname').value=S.name||'';updLogo();
+}
+$('item').addEventListener('change',()=>{const u=PRESETS[$('item').value.trim()];if(u){$('unit').value=u;preview()}});
+['floor','section','item','unit','l','w','h','n','ded'].forEach(i=>$(i).addEventListener('input',preview));
+$('a').addEventListener('input',()=>{aMan=$('a').value!=='';preview()});
+$('ddbox').addEventListener('input',e=>{const r=e.target.closest('.ddr');if(!r||!e.target.dataset.f)return;const x=dd[+r.dataset.i];x[e.target.dataset.f]=e.target.value;r.querySelector('.ddv').textContent=f2(ddArea(x))+' م²';updDD();preview()});
+$('ddbox').addEventListener('click',e=>{const t=e.target;if(t.dataset.x!==undefined){dd.splice(+t.dataset.x,1);renderDD();preview()}if(t.dataset.add!==undefined){dd.push({n:t.dataset.add,l:'',w:'',a:'',c:'1'});renderDD();preview()}});
+$('save').onclick=()=>{
+  const d=form();
+  if(!d.name){$('item').focus();return}
+  if(editId){const ix=S.items.findIndex(x=>x.id===editId);if(ix>-1)S.items[ix]={...d,id:editId}}
+  else S.items.push({...d,id:Date.now().toString(36)+Math.random().toString(36).slice(2,5)});
+  persist();resetForm(true);render();$('item').focus();
+};
+$('cancel').onclick=()=>{resetForm(true)};
+$('rows').addEventListener('click',e=>{
+  const ed=e.target.dataset.e,dl=e.target.dataset.d;
+  if(ed){const it=S.items.find(x=>x.id===ed);if(!it)return;editId=ed;
+    $('floor').value=it.floor;$('section').value=it.section;$('item').value=it.name;$('unit').value=it.unit;$('l').value=it.l;$('w').value=it.w;dd=(it.dd||[]).map(x=>({...x}));renderDD();$('h').value=it.h;aMan=!!it.am;$('a').value=it.am?it.a:'';$('n').value=it.n;$('price').value=it.price;$('ded').checked=!!it.ded;
+    $('ftitle').textContent='تعديل البند';$('save').textContent='حفظ التعديل';$('cancel').hidden=false;preview();window.scrollTo({top:0,behavior:'smooth'})}
+  if(dl){if(!confirm('حذف هذا البند؟'))return;S.items=S.items.filter(x=>x.id!==dl);if(editId===dl)resetForm(true);persist();render()}
+});
+$('pname').addEventListener('input',()=>{S.name=$('pname').value;persist()});
+$('ffilter').onchange=render;
+$('clear').onclick=()=>{if(S.items.length&&confirm('سيتم حذف جميع البنود. هل أنت متأكد؟')){S.items=[];persist();resetForm(true);render()}};
+function note(t,bad){$('msg').textContent=t;$('msg').style.color=bad?'var(--dn)':'var(--ok)';setTimeout(()=>{$('msg').textContent=''},5000)}
+const LKEY='arch-moaaz-logo-v1';
+function loadLogo(){try{const r=JSON.parse(localStorage.getItem(LKEY)||'null');if(r&&r.d){S.logo=r.d;S.logoR=r.r}else if(S.logo){localStorage.setItem(LKEY,JSON.stringify({d:S.logo,r:S.logoR}))}}catch(e){}}
+function updLogo(){$('logoBtn').textContent=S.logo?'تغيير الشعار':'رفع شعاري';$('logoDel').hidden=!S.logo;const im=$('logoPrev');im.hidden=!S.logo;if(S.logo)im.src=S.logo}
+$('logoBtn').onclick=()=>$('logoFile').click();
+$('logoDel').onclick=()=>{if(S.logo&&confirm('حذف شعارك والعودة للشعار الافتراضي؟')){delete S.logo;delete S.logoR;try{localStorage.removeItem(LKEY)}catch(e){}persist();updLogo()}};
+$('logoFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const r=new FileReader();
+  r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,420/im.width),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+    S.logo=c.toDataURL('image/png');S.logoR=c.height/c.width;let ok=true;try{localStorage.setItem(LKEY,JSON.stringify({d:S.logo,r:S.logoR}))}catch(e){ok=false}updLogo();note(ok?'تم حفظ الشعار ولن يتغير إلا إذا غيّرته أنت.':'تم استخدام الشعار الآن لكن تعذّر حفظه في المتصفح.',!ok)};im.src=r.result};r.readAsDataURL(f)};
+function makeLogo(){const c=document.createElement('canvas');c.width=520;c.height=140;const x=c.getContext('2d');
+  x.fillStyle='#1f2a3d';x.fillRect(0,0,520,140);x.fillStyle='#b4642a';x.fillRect(0,0,14,140);x.fillRect(34,28,84,84);
+  x.fillStyle='#fff';x.font='bold 60px Arial';x.textAlign='center';x.textBaseline='middle';x.fillText('A',76,72);
+  x.textAlign='left';x.font='bold 42px Arial';x.fillText('Arch-Moaaz',140,52);x.fillStyle='#e9b98f';x.font='600 30px Arial';x.fillText('Aboualized',142,98);return c.toDataURL('image/png')}
+$('xl').onclick=async()=>{
+  if(!S.items.length){note('أضف بنودًا أولًا قبل التصدير.',true);return}
+  if(typeof ExcelJS==='undefined'){note('تعذّر تحميل مكتبة Excel.',true);return}
+  const MN='#,##0.00" جنيه"';
+  const NAVY='FF1F2A3D',ORG='FFB4642A',LIGHT='FFF6F4EF',GREY='FFF6F4EF',WH='FFFFFFFF';
+  const th={style:'thin',color:{argb:'FFE3DED3'}},bd={top:th,bottom:th,left:th,right:th};
+  const wb=new ExcelJS.Workbook();wb.creator='Arch-Moaaz Aboualized';
+  const logo=S.logo||makeLogo(),ratio=S.logo?S.logoR:140/520;
+  let lw=250,lh=lw*ratio;if(lh>88){lh=88;lw=lh/ratio}
+  const img=wb.addImage({base64:logo.split(',')[1],extension:'png'});
+  const paint=(c,fill,fc,bold,al)=>{c.fill={type:'pattern',pattern:'solid',fgColor:{argb:fill}};c.font={name:'Arial',size:11,bold:!!bold,color:{argb:fc||'FF1D2330'}};c.alignment={horizontal:al||'center',vertical:'middle',wrapText:true};c.border=bd};
+  const mk=(name,widths)=>{const w=wb.addWorksheet(name,{views:[{rightToLeft:true,showGridLines:false}]});w.columns=widths.map(x=>({width:x}));for(let i=1;i<=4;i++)w.getRow(i).height=24;w.addImage(img,{tl:{col:0.1,row:0.2},ext:{width:lw,height:lh}});return w};
+  const band=(w,r,n,text,fill,fc,h)=>{w.mergeCells(r,1,r,n);const c=w.getCell(r,1);c.value=text;paint(c,fill,fc,true,'right');c.alignment={horizontal:'right',vertical:'middle',indent:1};w.getRow(r).height=h||24};
+  const titleBox=(w,rng,text,sz,col)=>{w.mergeCells(rng);const c=w.getCell(rng.split(':')[0]);c.value=text;c.font={name:'Arial',size:sz,bold:true,color:{argb:col}};c.alignment={horizontal:'right',vertical:'middle'}};
+  const date=new Date().toLocaleDateString('ar-EG');
+  // ===== الحصر التفصيلي (جدول لكل قسم) =====
+  const ws=mk('الحصر',[6,30,9,10,10,10,11,9,12,13,15]);
+  titleBox(ws,'D1:K2','حصر بنود التشطيبات',22,NAVY);
+  titleBox(ws,'D3:K4',`المشروع: ${S.name||'—'}     التاريخ: ${date}`,12,'FF6B7280');
+  let r=6,grand=0;const floorRefs=[];
+  const floors=[...new Set(S.items.map(i=>i.floor||'بدون دور'))];
+  floors.forEach(fl=>{
+    band(ws,r++,11,'الدور: '+fl,NAVY,WH,28);
+    const subs=[];let ft=0;
+    const secs=[...new Set(S.items.filter(i=>(i.floor||'بدون دور')===fl).map(i=>i.section||'بدون قسم'))];
+    secs.forEach(sc=>{
+      band(ws,r++,11,'القسم: '+sc,LIGHT,'FF7A3E12',22);
+      ['م','البند','الوحدة','الطول','العرض','الارتفاع','المساحة','العدد','الكمية','سعر الوحدة','الإجمالي'].forEach((t,i)=>{const c=ws.getCell(r,i+1);c.value=t;paint(c,ORG,WH,true)});
+      r++;const first=r;let st=0;
+      S.items.filter(i=>(i.floor||'بدون دور')===fl&&(i.section||'بدون قسم')===sc).forEach((it,k)=>{
+        const q=calc(it),p=parseFloat(it.price)||0;st+=q*p;
+        const v=[k+1,it.name+(it.ded?' (خصم)':'')+(dedOf(it)?` (بعد خصم ${f2(dedOf(it))} م²)`:''),it.unit,num(it.l)||null,num(it.w)||null,num(it.h)||null,areaOf(it)||null,parseFloat(it.n)||0,q,p||null,{formula:`I${r}*J${r}`,result:q*p}];
+        v.forEach((x,i)=>{const c=ws.getCell(r,i+1);c.value=x;paint(c,it.ded?'FFFDECEA':WH,it.ded?'FFC0392B':null,false,i===1?'right':'center');if(i>=3&&i<=5)c.numFmt='0.00" م"';else if(i===6)c.numFmt='#,##0.00" م²"';else if(i===8)c.numFmt='#,##0.00" '+it.unit+'"';else if(i>=9)c.numFmt=MN});
+        r++});
+      ws.mergeCells(r,1,r,10);const lc=ws.getCell(r,1);lc.value='إجمالي القسم';paint(lc,GREY,null,true,'left');
+      const tc=ws.getCell(r,11);tc.value={formula:`SUM(K${first}:K${r-1})`,result:st};paint(tc,GREY,null,true);tc.numFmt=MN;
+      subs.push('K'+r);ft+=st;r+=2});
+    ws.mergeCells(r,1,r,10);const fc=ws.getCell(r,1);fc.value='إجمالي '+fl;paint(fc,LIGHT,'FF7A3E12',true,'left');
+    const fv=ws.getCell(r,11);fv.value={formula:subs.join('+'),result:ft};paint(fv,LIGHT,'FF7A3E12',true);fv.numFmt=MN;
+    floorRefs.push('K'+r);grand+=ft;ws.getRow(r).height=24;r+=2});
+  ws.mergeCells(r,1,r,10);const gc=ws.getCell(r,1);gc.value='الإجمالي الكلي للمشروع';paint(gc,NAVY,WH,true,'left');gc.font={name:'Arial',size:13,bold:true,color:{argb:WH}};
+  const gv=ws.getCell(r,11);gv.value={formula:floorRefs.join('+'),result:grand};paint(gv,NAVY,WH,true);gv.font=gc.font;gv.numFmt=MN;ws.getRow(r).height=28;
+  // ===== ملخص حسب البند =====
+  const w2=mk('ملخص البنود',[34,10,16,14,16]);band(w2,5,5,'ملخص الكميات حسب البند',NAVY,WH,26);
+  ['البند','الوحدة','إجمالي الكمية','متوسط السعر','الإجمالي'].forEach((t,i)=>{const c=w2.getCell(6,i+1);c.value=t;paint(c,ORG,WH,true)});
+  const g={};S.items.forEach(it=>{const k=it.name+'|'+it.unit,q=calc(it);g[k]=g[k]||{n:it.name,u:it.unit,q:0,t:0};g[k].q+=q;g[k].t+=q*(parseFloat(it.price)||0)});
+  let r2=7;Object.values(g).forEach(o=>{[o.n,o.u,o.q,o.q?o.t/o.q:0,o.t].forEach((x,i)=>{const c=w2.getCell(r2,i+1);c.value=x;paint(c,WH,null,false,i===0?'right':'center');if(i===2)c.numFmt='#,##0.00" '+o.u+'"';else if(i>=3)c.numFmt=MN});r2++});
+  w2.mergeCells(r2,1,r2,4);paint(w2.getCell(r2,1),NAVY,WH,true,'left');w2.getCell(r2,1).value='الإجمالي الكلي';
+  const t2=w2.getCell(r2,5);t2.value={formula:`SUM(E7:E${r2-1})`,result:grand};paint(t2,NAVY,WH,true);t2.numFmt=MN;
+  // ===== ملخص حسب الدور =====
+  const w3=mk('ملخص الأدوار',[26,18]);band(w3,5,2,'إجمالي كل دور',NAVY,WH,26);
+  ['الدور','الإجمالي'].forEach((t,i)=>{const c=w3.getCell(6,i+1);c.value=t;paint(c,ORG,WH,true)});
+  const gf={};S.items.forEach(it=>{const k=it.floor||'بدون دور';gf[k]=(gf[k]||0)+calc(it)*(parseFloat(it.price)||0)});
+  let r3=7;Object.entries(gf).forEach(([k,v])=>{[k,v].forEach((x,i)=>{const c=w3.getCell(r3,i+1);c.value=x;paint(c,WH,null,false,i?'center':'right');if(i)c.numFmt=MN});r3++});
+  paint(w3.getCell(r3,1),NAVY,WH,true,'right');w3.getCell(r3,1).value='الإجمالي الكلي';
+  const t3=w3.getCell(r3,2);t3.value={formula:`SUM(B7:B${r3-1})`,result:grand};paint(t3,NAVY,WH,true);t3.numFmt=MN;
+  try{
+    const buf=await wb.xlsx.writeBuffer();
+    const name=(S.name||'حصر-التشطيبات').replace(/[\\/:*?"<>|]/g,'-')+'.xlsx';
+    await saveFile(name,new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+  }catch(e){note('تعذّر تجهيز الملف.',true)}
+};
+async function saveFile(name,blob){
+  const C=window.Capacitor;
+  if(C&&C.isNativePlatform&&C.isNativePlatform()){
+    try{
+      const b64=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(',')[1]);fr.readAsDataURL(blob)});
+      const {Filesystem,Share}=C.Plugins;
+      let w;try{w=await Filesystem.writeFile({path:name,data:b64,directory:'CACHE'})}catch(e){w=await Filesystem.writeFile({path:'arch-moaaz-'+Date.now()+name.slice(name.lastIndexOf('.')),data:b64,directory:'CACHE'})}
+      await Share.share({title:name,url:w.uri,dialogTitle:'حفظ أو مشاركة الملف'});note('تم تجهيز الملف: '+name);
+    }catch(e){if(!/cancel/i.test((e&&e.message)||''))note('تعذّر حفظ الملف.',true)}
+    return;
+  }
+  let dl=null;try{if(typeof claude!=='undefined')dl=await claude.use('downloads')}catch(e){}
+  if(dl){try{await dl.save({filename:name,data:await blob.arrayBuffer()});note('تم تجهيز الملف: '+name);return}catch(e){if(e&&e.code==='declined')return}}
+  const f=new File([blob],name,{type:blob.type});
+  if(/Android|iPhone|iPad/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:name});return}catch(e){if(e&&e.name==='AbortError')return}}
+  const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.target='_blank';document.body.appendChild(a);a.click();a.remove();
+  $('msg').style.color='var(--ok)';$('msg').innerHTML='لو لم يبدأ التحميل: <a href="'+u+'" download="'+esc(name)+'" target="_blank" style="color:var(--ac)">اضغط هنا لتحميل '+esc(name)+'</a>';
+}
+function reportEl(){
+  const logo=S.logo||makeLogo();
+  let h=`<style>#rep{width:900px;padding:24px;background:#fff;color:#1d2330;font-family:Cairo,Tahoma,Arial,sans-serif;direction:rtl}#rep .b{margin-bottom:14px}#rep table{width:100%;border-collapse:collapse;font-size:13px}#rep th{background:#b4642a;color:#fff;padding:7px 5px;border:1px solid #e3ded3}#rep td{padding:6px 5px;border:1px solid #e3ded3;text-align:center}#rep td.t{text-align:right}#rep .fl{background:#1f2a3d;color:#fff;padding:10px 14px;font-weight:700;font-size:16px}#rep .sc{background:#f6f4ef;color:#8f4c1b;padding:7px 14px;font-weight:700}#rep .st td{background:#f6f4ef;font-weight:700}#rep .ft{background:#f6f4ef;padding:9px 14px;font-weight:700;display:flex;justify-content:space-between}#rep .gt{background:#1f2a3d;color:#fff;padding:12px 14px;font-weight:700;font-size:17px;display:flex;justify-content:space-between}#rep .dd td{color:#c0392b}</style>`;
+  h+=`<div class="b" style="display:flex;align-items:center;gap:18px"><img src="${logo}" style="height:70px"><div><div style="font-size:24px;font-weight:700">حصر بنود التشطيبات</div><div style="color:#6b7280">المشروع: ${esc(S.name||'—')} &nbsp; التاريخ: ${new Date().toLocaleDateString('ar-EG')}</div></div></div>`;
+  const th=['م','البند','الوحدة','الطول','العرض','الارتفاع','المساحة','العدد','الكمية','السعر','الإجمالي'].map(t=>`<th>${t}</th>`).join('');
+  let grand=0;
+  [...new Set(S.items.map(i=>i.floor||'بدون دور'))].forEach(fl=>{
+    h+=`<div class="b fl">الدور: ${esc(fl)}</div>`;let ft=0;
+    const inF=S.items.filter(i=>(i.floor||'بدون دور')===fl);
+    [...new Set(inF.map(i=>i.section||'بدون قسم'))].forEach(sc=>{
+      let st=0;
+      const rows=inF.filter(i=>(i.section||'بدون قسم')===sc).map((it,k)=>{const q=calc(it),p=parseFloat(it.price)||0;st+=q*p;return `<tr class="${it.ded?'dd':''}"><td>${k+1}</td><td class="t">${esc(it.name)}${it.ded?' (خصم)':''}${dedOf(it)?' (بعد خصم '+f2(dedOf(it))+' م²)':''}</td><td>${esc(it.unit)}</td><td>${it.l?esc(it.l)+' م':''}</td><td>${it.w?esc(it.w)+' م':''}</td><td>${it.h?esc(it.h)+' م':''}</td><td>${areaOf(it)?f2(areaOf(it))+' م²':''}</td><td>${esc(it.n)}</td><td><b>${f2(q)} ${esc(it.unit)}</b></td><td>${p?f2(p)+' جنيه':''}</td><td>${f2(q*p)} جنيه</td></tr>`}).join('');
+      ft+=st;
+      h+=`<div class="b"><div class="sc">القسم: ${esc(sc)}</div><table><thead><tr>${th}</tr></thead><tbody>${rows}<tr class="st"><td colspan="10" style="text-align:left">إجمالي القسم</td><td>${f2(st)} جنيه</td></tr></tbody></table></div>`});
+    h+=`<div class="b ft"><span>إجمالي ${esc(fl)}</span><span>${f2(ft)} جنيه</span></div>`;grand+=ft});
+  h+=`<div class="b gt"><span>الإجمالي الكلي للمشروع</span><span>${f2(grand)} جنيه</span></div>`;
+  const d=document.createElement('div');d.id='rep';d.style.cssText='position:fixed;left:-10000px;top:0';d.innerHTML=h;document.body.appendChild(d);return d}
+async function exportImg(kind){
+  if(!S.items.length){note('أضف بنودًا أولًا قبل التصدير.',true);return}
+  if(typeof html2canvas==='undefined'||(kind==='pdf'&&!window.jspdf)){note('تعذّر تحميل مكتبة التصدير.',true);return}
+  note('جارٍ تجهيز الملف...');
+  const d=reportEl();
+  try{
+    await (document.fonts&&document.fonts.ready);
+    const sc=Math.min(2,14000/d.offsetHeight);
+    const cv=await html2canvas(d,{scale:sc,backgroundColor:'#ffffff',useCORS:true});
+    const base=(S.name||'حصر-التشطيبات').replace(/[\\/:*?"<>|]/g,'-');
+    if(kind==='jpg'){const bl=await new Promise(r=>cv.toBlob(r,'image/jpeg',.92));await saveFile(base+'.jpg',bl);return}
+    const {jsPDF}=window.jspdf,pdf=new jsPDF({unit:'mm',format:'a4'}),pw=210,pxPage=cv.width*297/pw;
+    const cuts=[...d.children].map(c=>(c.offsetTop+c.offsetHeight)*sc);
+    let y=0,first=true;
+    while(y<cv.height-1){
+      let end=Math.min(y+pxPage,cv.height);
+      if(end<cv.height){const ok=cuts.filter(c=>c>y+pxPage*.3&&c<=end);if(ok.length)end=Math.max(...ok)}
+      const pg=document.createElement('canvas');pg.width=cv.width;pg.height=Math.round(end-y);pg.getContext('2d').drawImage(cv,0,y,cv.width,end-y,0,0,cv.width,end-y);
+      if(!first)pdf.addPage();first=false;
+      pdf.addImage(pg.toDataURL('image/jpeg',.92),'JPEG',0,0,pw,(end-y)*pw/cv.width);y=end}
+    await saveFile(base+'.pdf',pdf.output('blob'));
+  }catch(e){note('تعذّر تجهيز الملف.',true)}finally{d.remove()}
+}
+$('pdf').onclick=()=>exportImg('pdf');$('jpg').onclick=()=>exportImg('jpg');
+load();loadLogo();resetForm();render();
+</script>
+</body>
+</html>
