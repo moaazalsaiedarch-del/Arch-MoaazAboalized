@@ -23,6 +23,12 @@ jobs:
       - name: Build web app
         run: npm run build --if-present
 
+      - name: Add iOS platform
+        run: |
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
+
       - name: Sync iOS
         run: npx cap sync ios
 
@@ -38,5 +44,11 @@ jobs:
             -configuration Release \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
-            -archivePath build/App.xcarchive \
+            -archivePath "$GITHUB_WORKSPACE/build/App.xcarchive" \
             archive CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload iOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS-App
+          path: build/App.xcarchive
